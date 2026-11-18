@@ -1,0 +1,11 @@
+﻿code_levier;libelle;description;facilite;niveau_actuel_defaut;effet_max;estimation;partenaires
+L1;Mobiliser des formations construites avec un employeur;Proposer une POEI ou une AFPR quand une entreprise recrute, plutôt qu'une formation collective;2;1;10;DONNEES;France Travail, entreprises, OPCO
+L2;Proposer la formation aux publics à qui elle apporte le plus;Bénéficiaires du RSA, de l'obligation d'emploi, 50 ans et plus;4;2;8;DONNEES;France Travail, Département, Cap emploi, Missions locales
+L3;Organiser des rencontres avec les employeurs en fin de formation;Job datings, présentation des stagiaires aux entreprises;5;1;6;DONNEES;France Travail, organismes de formation, entreprises
+L4;Orienter vers les formations aux métiers en tension;En priorité les métiers où le lien entre formation et métier est fort;2;1;10;DONNEES;Région, France Travail, branches professionnelles
+L6;Coupler immersion en entreprise et formation;Une immersion (PMSMP) avant l'entrée en formation pour valider le projet professionnel;4;1;4;FORFAITAIRE;France Travail, Missions locales, Cap emploi, entreprises
+L7;Construire des parcours sans rupture, du pré-qualifiant au qualifiant;Enchaîner remise à niveau puis formation qualifiante, avec une place réservée à la sortie;2;1;50;FORFAITAIRE;Région, France Travail, organismes de formation
+L8;Vérifier les prérequis à l'entrée en formation;Information collective, tests de positionnement, entretien de sélection avec l'organisme;4;2;4;FORFAITAIRE;France Travail, organismes de formation
+L9;Lever les freins pendant la formation;Solutions de mobilité, de garde d'enfants, aides financières pour éviter les abandons;3;2;4;FORFAITAIRE;France Travail, Département, communes et intercommunalités
+L10;Proposer un contrat en alternance à la sortie de formation;Contrat de professionnalisation ou d'apprentissage avec un employeur du métier visé;3;1;3;FORFAITAIRE;France Travail, OPCO, entreprises, Missions locales
+L5;Accompagner les publics prioritaires après la formation;Suivi renforcé dans la recherche d'emploi;3;2;5;DONNEES;France Travail, Département, Cap emploi, Missions locales

@@ -1,0 +1,26 @@
+﻿code_rome;libelle_metier;domaine;niveau_tension;lien_formation_metier;pre_qualifiant;millesime
+J1501;Aide-soignant;Sanitaire et social;TRES_FORTE;FORT;NON;2025
+K1302;Auxiliaire de vie;Sanitaire et social;TRES_FORTE;MOYEN;NON;2025
+K1301;Accompagnant éducatif et social;Sanitaire et social;FORTE;FORT;NON;2025
+N4101;Conducteur poids lourd;Transport et logistique;TRES_FORTE;FORT;NON;2025
+N1103;Préparateur de commandes;Transport et logistique;FORTE;FAIBLE;NON;2025
+N1101;Cariste;Transport et logistique;FORTE;MOYEN;NON;2025
+F1703;Maçon;BTP;FORTE;MOYEN;NON;2025
+F1602;Électricien du bâtiment;BTP;TRES_FORTE;FORT;NON;2025
+F1603;Plombier chauffagiste;BTP;TRES_FORTE;FORT;NON;2025
+H2909;Opérateur de production;Industrie;FORTE;FAIBLE;NON;2025
+H2913;Soudeur;Industrie;TRES_FORTE;FORT;NON;2025
+I1304;Technicien de maintenance;Industrie;TRES_FORTE;FORT;NON;2025
+D1214;Vendeur;Commerce et vente;;FAIBLE;NON;2025
+D1507;Employé de libre-service;Commerce et vente;;FAIBLE;NON;2025
+D1211;Conseiller de vente;Commerce et vente;;MOYEN;NON;2025
+K1304;Aide à domicile;Services à la personne;TRES_FORTE;FAIBLE;NON;2025
+K2204;Agent d'entretien;Services à la personne;FORTE;FAIBLE;NON;2025
+K1303;Garde d'enfants;Services à la personne;FORTE;MOYEN;NON;2025
+I1401;Technicien support;Informatique et numérique;;MOYEN;NON;2025
+M1805;Développeur;Informatique et numérique;;FORT;NON;2025
+M1801;Technicien réseaux;Informatique et numérique;;FORT;NON;2025
+G1602;Cuisinier;Hôtellerie et restauration;TRES_FORTE;MOYEN;NON;2025
+G1803;Serveur;Hôtellerie et restauration;FORTE;FAIBLE;NON;2025
+G1603;Commis de cuisine;Hôtellerie et restauration;FORTE;FAIBLE;NON;2025
+PREQ1;Remise à niveau, savoirs de base;Remise à niveau (pré-qualifiant);;;OUI;2025

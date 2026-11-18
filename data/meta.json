@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "date_mise_a_jour": "2026-04-15",
+  "source": "Tableau de bord RPE",
+  "donnees": "fictives",
+  "badge": "Maquette | Données fictives",
+  "periode_12_mois": {
+    "debut": "2025-03",
+    "fin": "2026-02",
+    "libelle": "entre mars 2025 et février 2026"
+  }
+}

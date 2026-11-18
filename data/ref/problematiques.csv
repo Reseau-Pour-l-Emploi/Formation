@@ -1,0 +1,5 @@
+﻿code_problematique;libelle;indicateur;objectif;unite
+ACCES_DE;Accès et pérennisation dans l'emploi;Accès à l'emploi de l'ensemble des demandeurs d'emploi;PERSONNES;personnes
+PAUVRETE;Pauvreté / précarité;Accès à l'emploi des bénéficiaires du RSA;PERSONNES;personnes
+POURVOI;Pourvoi des offres d'emploi;Taux de pourvoi des offres d'emploi;ENTREPRISES;offres
+POURVOI_TENSION;Métiers en tension;Taux de pourvoi des offres sur les métiers en tension;ENTREPRISES;offres
