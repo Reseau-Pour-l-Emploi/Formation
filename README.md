@@ -40,9 +40,21 @@ L'étape et le territoire consultés figurent dans l'adresse, à partager ou à 
 
 ## Mettre à jour les données
 
+**Actualisation mensuelle, sur 12 mois glissants.** Chaque source garde son propre dernier mois disponible (exemple en novembre 2026) :
+
+| Source | Nature | Dernier mois | 12 mois retenus |
+|---|---|---|---|
+| Demandeurs d'emploi inscrits | stock | septembre 2026 | octobre 2025 à septembre 2026 |
+| Offres d'emploi | flux | juillet 2026 | août 2025 à juillet 2026 |
+| Entrées en formation | flux | juin 2026 | juillet 2025 à juin 2026 |
+| Sortants de formation, accès à l'emploi à 6 mois | flux | cohorte de février 2026 | mars 2025 à février 2026 |
+
+Ces périodes sont déclarées dans `data/meta.json` (rubrique `periodes`) : la page les affiche avec les limites d'interprétation (périodes décalées, stock et flux), et le script de contrôle vérifie qu'elles correspondent aux données.
+
+
 1. Extraire les comptages du tableau de bord RPE au format décrit dans `modele-donnees.html` (CSV, séparateur `;`, UTF-8, comptages et jamais de taux).
 2. Contrôler : `python3 scripts/controle.py data --seuil 5` (code retour 1 en cas d'erreur bloquante ; `--seuil` signale les effectifs sous le seuil de secret statistique).
-3. Mettre à jour `data/meta.json` : `date_mise_a_jour`, `periode_12_mois`, et `donnees` à `reelles` avec un `badge` vide pour retirer la mention de maquette.
+3. Mettre à jour `data/meta.json` : `date_mise_a_jour`, `periode_12_mois`, les `periodes` de chaque source, et `donnees` à `reelles` avec un `badge` vide pour retirer la mention de maquette.
 4. Commit sur la branche principale : GitHub Pages republie.
 
 Aucune modification de `index.html` n'est nécessaire pour changer les territoires, les territoires proches, les métiers, les problématiques ou les textes et paramètres des pistes (`ref/leviers.csv`).

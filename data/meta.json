@@ -1,12 +1,69 @@
 {
-  "version": "1.0",
-  "date_mise_a_jour": "2026-04-15",
+  "version": "1.1",
+  "date_mise_a_jour": "2026-11-05",
   "source": "Tableau de bord RPE",
   "donnees": "fictives",
   "badge": "Maquette | Données fictives",
+  "actualisation": "mensuelle, sur 12 mois glissants",
   "periode_12_mois": {
     "debut": "2025-03",
     "fin": "2026-02",
     "libelle": "entre mars 2025 et février 2026"
-  }
+  },
+  "periodes": [
+    {
+      "code": "sortants",
+      "donnee": "Sortants de formation : accès à l'emploi et présence en emploi 6 mois après",
+      "nature": "flux",
+      "debut": "2025-03",
+      "fin": "2026-02",
+      "usage": "Repères 1 à 4, questions 1 à 3, simulation",
+      "note": "Le résultat à 6 mois n'est connu que 6 mois après la sortie : c'est la donnée la plus ancienne du parcours."
+    },
+    {
+      "code": "sortants_recents",
+      "donnee": "Sortants récents : accès à l'emploi à 1 et 3 mois",
+      "nature": "flux",
+      "debut": "2026-03",
+      "fin": "2026-05",
+      "usage": "Repère 4 (tendance récente)",
+      "note": "Résultat provisoire : le recul à 6 mois n'est pas encore atteint."
+    },
+    {
+      "code": "entrees",
+      "donnee": "Entrées en formation",
+      "nature": "flux",
+      "debut": "2025-07",
+      "fin": "2026-06",
+      "usage": "Fichier formation_metier (information)",
+      "note": "Plus récentes que les sorties : elles annoncent les sorties des prochains mois."
+    },
+    {
+      "code": "demande",
+      "donnee": "Demandeurs d'emploi inscrits en catégories A, B, C",
+      "nature": "stock",
+      "debut": "2025-10",
+      "fin": "2026-09",
+      "usage": "Repère 5, question 1 (publics parmi les inscrits)",
+      "note": "Moyenne des effectifs inscrits en fin de mois. Évolution : 12 derniers mois comparés aux 12 précédents."
+    },
+    {
+      "code": "acces_de",
+      "donnee": "Accès à l'emploi de l'ensemble des demandeurs d'emploi",
+      "nature": "stock",
+      "debut": "2025-03",
+      "fin": "2026-02",
+      "usage": "Question 1, repère 6",
+      "note": "Demandeurs inscrits sur la période, suivis 6 mois : même recul que les sortants de formation."
+    },
+    {
+      "code": "offres",
+      "donnee": "Offres d'emploi déposées",
+      "nature": "flux",
+      "debut": "2025-08",
+      "fin": "2026-07",
+      "usage": "Repère 5, question 3, repère 6 (pourvoi)",
+      "note": "Évolution : 12 derniers mois comparés aux 12 précédents."
+    }
+  ]
 }

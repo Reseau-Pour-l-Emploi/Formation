@@ -134,7 +134,7 @@ def om(i, r):
 faits('faits/offres_metier.csv', ['code_clpe', 'code_rome'], om)
 def do(i, r):
     if not MOIS.match(r['mois']): err('faits/demande_offres_mois.csv ligne %d : mois au format AAAA-MM' % (i + 2))
-    ent('faits/demande_offres_mois.csv', i, r, 'nb_defm_abc'); ent('faits/demande_offres_mois.csv', i, r, 'nb_offres')
+    ent('faits/demande_offres_mois.csv', i, r, 'nb_defm_abc', vide=True); ent('faits/demande_offres_mois.csv', i, r, 'nb_offres', vide=True)
 faits('faits/demande_offres_mois.csv', ['code_clpe', 'mois'], do)
 def pr(i, r):
     n = 'faits/problematiques.csv'
@@ -148,8 +148,10 @@ mois = sorted({r['mois_sortie'] for r in T['faits/sortants_mois.csv']})
 m6 = sorted({r['mois_sortie'] for r in T['faits/sortants_mois.csv'] if r['nb_acces_6m'] != ''})
 if len(m6) < 24: err('faits/sortants_mois.csv : 24 mois avec accès à 6 mois attendus, %d trouvés' % len(m6))
 if len(mois) != 27: warn('faits/sortants_mois.csv : 27 mois attendus (24 mesurés à 6 mois + 3 récents), %d trouvés' % len(mois))
-nd = len({r['mois'] for r in T['faits/demande_offres_mois.csv']})
-if nd < 24: err('faits/demande_offres_mois.csv : 24 mois attendus, %d trouvés' % nd)
+md = sorted({r['mois'] for r in T['faits/demande_offres_mois.csv'] if r['nb_defm_abc'] != ''})
+mo = sorted({r['mois'] for r in T['faits/demande_offres_mois.csv'] if r['nb_offres'] != ''})
+if len(md) < 24: err('faits/demande_offres_mois.csv : 24 mois de demande d\'emploi attendus, %d trouvés' % len(md))
+if len(mo) < 24: err('faits/demande_offres_mois.csv : 24 mois d\'offres attendus, %d trouvés' % len(mo))
 win = set(m6[-12:])
 for c in sorted(clpe):
     a = sum(int(r['nb_sortants']) for r in T['faits/sortants_mois.csv'] if r['code_clpe'] == c and r['mois_sortie'] in win and r['nb_sortants'].isdigit())
@@ -161,7 +163,20 @@ for c in sorted(clpe):
 try:
     meta = json.load(open(os.path.join(DATA, 'meta.json'), encoding='utf-8'))
     p = meta.get('periode_12_mois', {})
-    if m6 and (p.get('debut'), p.get('fin')) != (m6[-12], m6[-1]): warn('meta.json : période %s - %s, les données donnent %s - %s' % (p.get('debut'), p.get('fin'), m6[-12], m6[-1]))
+    if m6 and (p.get('debut'), p.get('fin')) != (m6[-12], m6[-1]): warn('meta.json : periode_12_mois %s - %s, les données donnent %s - %s' % (p.get('debut'), p.get('fin'), m6[-12], m6[-1]))
+    PER = {x.get('code'): x for x in meta.get('periodes', [])}
+    if not PER: warn('meta.json : rubrique "periodes" absente (les périodes ne seront pas affichées)')
+    attendu = {'sortants': m6[-12:], 'sortants_recents': [m for m in mois if m > (m6[-1] if m6 else '')], 'demande': md[-12:], 'offres': mo[-12:], 'acces_de': m6[-12:]}
+    for code, ms in attendu.items():
+        x = PER.get(code)
+        if x is None:
+            if PER: warn('meta.json : période "%s" absente' % code)
+            continue
+        if ms and (x.get('debut'), x.get('fin')) != (ms[0], ms[-1]): warn('meta.json : période "%s" %s - %s, les données donnent %s - %s' % (code, x.get('debut'), x.get('fin'), ms[0], ms[-1]))
+    for code, x in PER.items():
+        if x.get('nature') not in ('stock', 'flux'): err('meta.json : période "%s", nature doit valoir stock ou flux' % code)
+        for k in ('debut', 'fin'):
+            if not MOIS.match(str(x.get(k, ''))): err('meta.json : période "%s", %s au format AAAA-MM' % (code, k))
 except Exception as e:
     err('meta.json : illisible (%s)' % e)
 

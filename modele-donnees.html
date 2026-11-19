@@ -53,6 +53,7 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
 .map td:first-child{color:var(--fg1);font-weight:500}
 .map code{font-family:var(--mono);font-size:12px;color:var(--indigo)}
 .tblw{overflow-x:auto}
+@media (max-width:760px){table.pertab thead{display:none}table.pertab,table.pertab tbody,table.pertab tr,table.pertab td{display:block;width:auto}table.pertab tr{border-bottom:1px solid #DDD;padding:8px 0}table.pertab td{border:0;padding:2px 0}table.pertab td:first-child{font-weight:700}}
 </style>
 </head>
 <body>
@@ -101,11 +102,26 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
   <div class="panel">
     <h2>La mise à jour</h2>
     <div class="flow">
-      <div><span class="n">1. Extraire</span><b>Tableau de bord RPE</b>Extraction mensuelle des comptages par CLPE, aux formats ci-dessous.</div>
+      <div><span class="n">1. Extraire</span><b>Tableau de bord RPE</b>Extraction mensuelle des comptages par CLPE, sur 12 mois glissants, avec le dernier mois disponible de chaque source.</div>
       <div><span class="n">2. Contrôler</span><b>Script de contrôle</b>Colonnes attendues, codes connus, totaux cohérents, secret statistique appliqué.</div>
-      <div><span class="n">3. Publier</span><b>Commit sur la branche principale</b>Mise à jour de <code>data/</code> et de <code>meta.json</code> ; GitHub Pages republie.</div>
+      <div><span class="n">3. Publier</span><b>Commit sur la branche principale</b>Mise à jour de <code>data/</code> et des périodes de <code>meta.json</code> ; GitHub Pages republie.</div>
       <div><span class="n">4. Lire</span><b>La page</b>Chargement des CSV, calcul des taux, agrégation des territoires proches et des 12 mois, affichage.</div>
     </div>
+  </div>
+
+  <div class="panel">
+    <h2>Les périodes : actualisation mensuelle, 12 mois glissants</h2>
+    <p class="sub">Chaque mois, chaque source avance d'un mois. Les sources ne sont pas disponibles au même rythme : chacune garde son propre dernier mois (exemple à l'actualisation de novembre 2026)</p>
+    <table class="pertab"><thead><tr><th>Source</th><th>Nature</th><th>Dernier mois disponible</th><th>Période de 12 mois retenue</th><th>Fichiers</th><th>Pourquoi ce décalage</th></tr></thead><tbody>
+      <tr><td>Demandeurs d'emploi inscrits (A, B, C)</td><td>Stock</td><td>septembre 2026</td><td>octobre 2025 à septembre 2026 (24 mois fournis pour l'évolution)</td><td>demande_offres_mois (nb_defm_abc), inscrits_public (nb_inscrits)</td><td>Donnée connue le plus tôt</td></tr>
+      <tr><td>Offres d'emploi</td><td>Flux</td><td>juillet 2026</td><td>août 2025 à juillet 2026 (24 mois fournis)</td><td>demande_offres_mois (nb_offres), offres_metier, problématiques de pourvoi</td><td>Délai de consolidation des offres</td></tr>
+      <tr><td>Entrées en formation</td><td>Flux</td><td>juin 2026</td><td>juillet 2025 à juin 2026</td><td>formation_metier (nb_entrees)</td><td>Délai de remontée des entrées</td></tr>
+      <tr><td>Sortants de formation, accès à l'emploi à 6 mois</td><td>Flux</td><td>cohorte de février 2026</td><td>mars 2025 à février 2026 (24 mois fournis pour l'évolution)</td><td>sortants_mois, sortants_public, formation_metier (sortants, accès)</td><td>Le résultat à 6 mois exige 6 mois de recul après la sortie</td></tr>
+      <tr><td>Sortants récents, accès à 1 et 3 mois</td><td>Flux</td><td>mai 2026</td><td>mois suivant la dernière cohorte à 6 mois</td><td>sortants_mois (nb_acces_6m vide)</td><td>Résultat provisoire</td></tr>
+      <tr><td>Accès à l'emploi des demandeurs</td><td>Stock</td><td>février 2026</td><td>mars 2025 à février 2026</td><td>inscrits_public (nb_acces_6m), problématiques des personnes</td><td>Même recul de 6 mois que les sortants</td></tr>
+    </tbody></table>
+    <p class="note" style="margin-top:10px">Une colonne d'un même fichier peut donc s'arrêter plus tôt qu'une autre : dans <code>demande_offres_mois.csv</code>, <code>nb_offres</code> est laissé vide pour les mois postérieurs au dernier mois d'offres disponible. Les périodes réellement retenues sont déclarées dans <code>meta.json</code> (rubrique <code>periodes</code>) : la page les affiche, et le script de contrôle vérifie qu'elles correspondent aux données.</p>
+    <p class="note"><b>Stock et flux.</b> Un stock compte les personnes présentes à une date (demandeurs inscrits) ; un flux compte des événements sur une période (entrées, sorties, offres). Rapprocher un stock et un flux, ou deux périodes différentes, donne des ordres de grandeur : la page le signale à l'utilisateur dans chaque bloc concerné.</p>
   </div>
 
   <div class="panel">
@@ -158,7 +174,7 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
         <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
           <tr><td>code_clpe<span class="k">clé</span></td><td>texte</td><td>CLPE00001</td><td></td></tr>
           <tr><td>public<span class="k">clé</span></td><td>texte</td><td>BRSA</td><td>Mêmes catégories que ci-dessus</td></tr>
-          <tr><td>nb_inscrits</td><td>entier</td><td>1073</td><td>Demandeurs d'emploi (catégories A, B, C)</td></tr>
+          <tr><td>nb_inscrits</td><td>entier</td><td>1073</td><td>Demandeurs d'emploi (catégories A, B, C) : moyenne des stocks mensuels sur la période « demande »</td></tr>
           <tr><td>nb_acces_6m</td><td>entier</td><td>204</td><td>Ayant accédé à l'emploi dans les 6 mois, tous inscrits</td></tr>
         </tbody></table></div>
 
@@ -166,7 +182,7 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
         <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
           <tr><td>code_clpe<span class="k">clé</span></td><td>texte</td><td>CLPE00001</td><td></td></tr>
           <tr><td>code_rome<span class="k">clé</span></td><td>texte</td><td>J1501</td><td>Métier visé par la formation</td></tr>
-          <tr><td>nb_entrees</td><td>entier</td><td>18</td><td>Entrées en formation</td></tr>
+          <tr><td>nb_entrees</td><td>entier</td><td>18</td><td>Entrées en formation sur la période « entrees » (information)</td></tr>
           <tr><td>nb_sortants</td><td>entier</td><td>16</td><td></td></tr>
           <tr><td>nb_acces_6m</td><td>entier</td><td>11</td><td></td></tr>
         </tbody></table></div>
@@ -178,12 +194,12 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
           <tr><td>nb_offres</td><td>entier</td><td>142</td><td>Offres d'emploi déposées</td></tr>
         </tbody></table></div>
 
-      <div class="file" style="--c:var(--indigo)"><div class="hd"><code>faits/demande_offres_mois.csv</code><span class="tag t-fait">Faits</span><span>CLPE × mois, 24 mois</span></div><div class="use">Repère 5 (l'horizon)</div>
+      <div class="file" style="--c:var(--indigo)"><div class="hd"><code>faits/demande_offres_mois.csv</code><span class="tag t-fait">Faits</span><span>CLPE × mois, 24 mois par série (les deux séries peuvent finir à des mois différents)</span></div><div class="use">Repère 5 (l'horizon) ; volume annuel d'offres pour le pourvoi</div>
         <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
           <tr><td>code_clpe<span class="k">clé</span></td><td>texte</td><td>CLPE00001</td><td></td></tr>
           <tr><td>mois<span class="k">clé</span></td><td>AAAA-MM</td><td>2026-02</td><td></td></tr>
-          <tr><td>nb_defm_abc</td><td>entier</td><td>5184</td><td>Demandeurs d'emploi en fin de mois</td></tr>
-          <tr><td>nb_offres</td><td>entier</td><td>466</td><td>Offres déposées dans le mois</td></tr>
+          <tr><td>nb_defm_abc</td><td>entier</td><td>5184</td><td>Demandeurs d'emploi en fin de mois (stock). Vide si le mois n'est pas encore disponible</td></tr>
+          <tr><td>nb_offres</td><td>entier</td><td>466</td><td>Offres déposées dans le mois (flux). Vide pour les mois postérieurs au dernier mois d'offres disponible</td></tr>
         </tbody></table></div>
 
       <div class="file" style="--c:var(--indigo)"><div class="hd"><code>faits/problematiques.csv</code><span class="tag t-fait">Faits</span><span>CLPE × problématique, 12 mois</span></div><div class="use">Repère 6 (les autres enjeux)</div>
@@ -235,6 +251,12 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
           <tr><td>badge</td><td>texte</td><td>Maquette | Données fictives</td><td>Texte du bandeau en haut de page ; vide pour le masquer</td></tr>
           <tr><td>periode_12_mois.debut / fin</td><td>AAAA-MM</td><td>2025-03 / 2026-02</td><td>12 derniers mois avec un recul de 6 mois</td></tr>
           <tr><td>periode_12_mois.libelle</td><td>texte</td><td>entre mars 2025 et février 2026</td><td>Repris dans les sources et le récapitulatif</td></tr>
+          <tr><td>actualisation</td><td>texte</td><td>mensuelle, sur 12 mois glissants</td><td>Affiché dans les périodes des données</td></tr>
+          <tr><td>periodes[].code</td><td>texte</td><td>demande</td><td>sortants, sortants_recents, entrees, demande, acces_de, offres</td></tr>
+          <tr><td>periodes[].donnee</td><td>texte</td><td>Demandeurs d'emploi inscrits en catégories A, B, C</td><td>Libellé affiché</td></tr>
+          <tr><td>periodes[].nature</td><td>stock / flux</td><td>stock</td><td>Nature de la donnée</td></tr>
+          <tr><td>periodes[].debut / fin</td><td>AAAA-MM</td><td>2025-10 / 2026-09</td><td>Période de 12 mois retenue (fin = dernier mois disponible)</td></tr>
+          <tr><td>periodes[].usage / note</td><td>texte</td><td>Repère 5, question 1</td><td>Où la donnée est utilisée ; ce qu'il faut savoir pour l'interpréter</td></tr>
         </tbody></table></div>
     </div>
   </div>
