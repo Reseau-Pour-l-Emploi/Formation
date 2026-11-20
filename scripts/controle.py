@@ -27,7 +27,11 @@ COLS = {
     'faits/offres_metier.csv': ['code_clpe', 'code_rome', 'nb_offres'],
     'faits/demande_offres_mois.csv': ['code_clpe', 'mois', 'nb_defm_abc', 'nb_offres'],
     'faits/problematiques.csv': ['code_clpe', 'code_problematique', 'volume', 'numerateur'],
+    'ref/evaluations.csv': ['code_evaluation', 'titre', 'organisme', 'reference', 'auteurs', 'annee', 'methode', 'periode_observation', 'champ', 'limites', 'url'],
+    'ref/evaluations_definitions.csv': ['code_evaluation', 'terme', 'definition'],
+    'ref/evaluations_resultats.csv': ['code_resultat', 'code_evaluation', 'constat', 'chiffres', 'sens', 'formations', 'publics', 'metiers_rome', 'leviers', 'etapes', 'enseignement'],
 }
+FACULTATIFS = {'ref/evaluations.csv', 'ref/evaluations_resultats.csv', 'ref/evaluations_definitions.csv'}
 DISP = {'AFC', 'CPF', 'PRF', 'AIF', 'POEI', 'AFPR'}
 PUB = {'BRSA', 'BOE', 'SEN50', 'JEU26', 'NIVBAC', 'AUTRES'}
 LEV = {'L%d' % i for i in range(1, 11)}
@@ -38,7 +42,9 @@ def warn(m): WARN.append(m)
 def read(name):
     p = os.path.join(DATA, name)
     if not os.path.exists(p):
-        err('%s : fichier absent' % name); return []
+        if name in FACULTATIFS: warn('%s : fichier absent (facultatif, bloc non affiché)' % name)
+        else: err('%s : fichier absent' % name)
+        return []
     with open(p, encoding='utf-8-sig', newline='') as f:
         r = csv.DictReader(f, delimiter=';')
         h = [c.strip() for c in (r.fieldnames or [])]
@@ -142,6 +148,24 @@ def pr(i, r):
     v = ent(n, i, r, 'volume'); m = ent(n, i, r, 'numerateur')
     if v is not None and m is not None and m > v: err('%s ligne %d : numerateur > volume' % (n, i + 2))
 faits('faits/problematiques.csv', ['code_clpe', 'code_problematique'], pr)
+
+# evaluations nationales
+evs = {r['code_evaluation'] for r in T['ref/evaluations.csv']}
+for i, r in enumerate(T['ref/evaluations.csv']):
+    for k in ('titre', 'organisme', 'reference', 'champ', 'limites'):
+        if not r.get(k): err('ref/evaluations.csv ligne %d : %s vide (le champ et les limites doivent toujours être renseignés)' % (i + 2, k))
+for i, r in enumerate(T['ref/evaluations_definitions.csv']):
+    if r['code_evaluation'] not in evs: err('ref/evaluations_definitions.csv ligne %d : code_evaluation inconnu (%s)' % (i + 2, r['code_evaluation']))
+    if not r['terme'] or not r['definition']: err('ref/evaluations_definitions.csv ligne %d : terme et definition obligatoires' % (i + 2))
+for i, r in enumerate(T['ref/evaluations_resultats.csv']):
+    n = 'ref/evaluations_resultats.csv'
+    if r['code_evaluation'] not in evs: err('%s ligne %d : code_evaluation inconnu (%s)' % (n, i + 2, r['code_evaluation']))
+    if r['sens'] not in ('POSITIF', 'SANS_EFFET', 'NEGATIF', 'NUANCE'): err('%s ligne %d : sens doit valoir POSITIF, SANS_EFFET, NEGATIF ou NUANCE' % (n, i + 2))
+    if not r['constat']: err('%s ligne %d : constat vide' % (n, i + 2))
+    for l in [x.strip() for x in r['leviers'].split(';') if x.strip()]:
+        if l not in LEV: warn('%s ligne %d : piste %s inconnue' % (n, i + 2, l))
+    for e in [x.strip() for x in r['etapes'].split(';') if x.strip()]:
+        if e not in ('q1', 'q2', 'q3', 'agir'): warn('%s ligne %d : étape %s inconnue (q1, q2, q3, agir)' % (n, i + 2, e))
 
 # coherences entre fichiers
 mois = sorted({r['mois_sortie'] for r in T['faits/sortants_mois.csv']})

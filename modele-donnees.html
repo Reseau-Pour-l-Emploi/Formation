@@ -84,7 +84,10 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
 │   │   ├── proches.csv              CLPE proches (proximité statistique)
 │   │   ├── metiers.csv              ROME, domaine, tension, lien formation - métier
 │   │   ├── problematiques.csv       liste des problématiques mesurables
-│   │   └── leviers.csv              paramètres des pistes du simulateur
+│   │   ├── leviers.csv              paramètres des pistes du simulateur
+│   │   ├── evaluations.csv          études nationales (facultatif)
+│   │   ├── evaluations_definitions.csv définitions des études (facultatif)
+│   │   └── evaluations_resultats.csv résultats d'évaluations nationales (facultatif)
 │   └── faits/
 │       ├── sortants_mois.csv        24 mois glissants
 │       ├── sortants_public.csv      12 derniers mois
@@ -242,6 +245,43 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
           <tr><td>partenaires</td><td>texte</td><td>France Travail, organismes de formation</td><td>Partenaires à mobiliser</td></tr>
         </tbody></table></div>
 
+      <div class="file" style="--c:#2E8B57"><div class="hd"><code>ref/evaluations.csv</code><span class="tag t-ref">Référentiel</span><span>1 ligne par étude nationale (facultatif)</span></div><div class="use">Étape Agir : note de bas de bloc numérotée (une par étude) avec source, méthode, champ et limites ; page Méthode</div>
+        <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
+          <tr><td>code_evaluation<span class="k">clé</span></td><td>texte</td><td>DARES2025_RE63</td><td>Identifiant libre</td></tr>
+          <tr><td>titre</td><td>texte</td><td>Effet de la formation professionnelle sur la demande de travail...</td><td>Titre de l'étude</td></tr>
+          <tr><td>organisme</td><td>texte</td><td>Dares</td><td>Producteur ; affiché avec l'année (« Dares 2025 »)</td></tr>
+          <tr><td>reference</td><td>texte</td><td>Dares, Rapport d'études n° 63, janvier 2025</td><td>Référence bibliographique</td></tr>
+          <tr><td>auteurs / annee</td><td>texte / entier</td><td>2025</td><td></td></tr>
+          <tr><td>methode</td><td>texte</td><td>Testing (étude par correspondance)...</td><td>Méthode d'évaluation</td></tr>
+          <tr><td>periode_observation</td><td>texte</td><td>2021-2024</td><td>Période étudiée</td></tr>
+          <tr><td>champ</td><td>texte</td><td>France métropolitaine ; six métiers en tension...</td><td><b>Obligatoire</b> : métiers, publics et territoires couverts</td></tr>
+          <tr><td>limites</td><td>texte</td><td>Mesure le rappel, pas l'embauche...</td><td><b>Obligatoire</b> : ce que l'étude ne permet pas de conclure</td></tr>
+          <tr><td>url</td><td>texte</td><td></td><td>Lien vers la publication (facultatif)</td></tr>
+        </tbody></table></div>
+
+      <div class="file" style="--c:#2E8B57"><div class="hd"><code>ref/evaluations_definitions.csv</code><span class="tag t-ref">Référentiel</span><span>1 ligne par terme (facultatif)</span></div><div class="use">Étape Agir : encadré « Définitions utilisées » ; récapitulatif</div>
+        <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
+          <tr><td>code_evaluation</td><td>texte</td><td>DARES2025_RE63</td><td>Étude qui emploie le terme</td></tr>
+          <tr><td>terme</td><td>texte</td><td>Taux de rappel</td><td>Terme utilisé dans les constats et les chiffres</td></tr>
+          <tr><td>definition</td><td>texte</td><td>Part des candidatures ayant reçu une réponse positive de l'employeur...</td><td>Définition précise, telle que retenue par l'étude</td></tr>
+        </tbody></table></div>
+
+      <div class="file" style="--c:#2E8B57"><div class="hd"><code>ref/evaluations_resultats.csv</code><span class="tag t-ref">Référentiel</span><span>1 ligne par résultat (facultatif)</span></div><div class="use">Étape Agir (bloc « Ce que disent les évaluations nationales » et lignes sous les pistes), questions 2 et 3, métiers étudiés, récapitulatif et export</div>
+        <table><thead><tr><th>Colonne</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
+          <tr><td>code_resultat<span class="k">clé</span></td><td>texte</td><td>R1</td><td>Identifiant libre</td></tr>
+          <tr><td>code_evaluation</td><td>texte</td><td>DARES2025_RE63</td><td>Étude d'origine (ref/evaluations.csv)</td></tr>
+          <tr><td>constat</td><td>texte</td><td>Une formation longue et certifiante rapproche...</td><td>Résultat en une phrase</td></tr>
+          <tr><td>chiffres</td><td>texte</td><td>Taux de rappel : 51 % contre 59 %...</td><td>Chiffres clés de l'étude</td></tr>
+          <tr><td>sens</td><td>texte</td><td>POSITIF</td><td>POSITIF, SANS_EFFET, NEGATIF ou NUANCE</td></tr>
+          <tr><td>formations / publics</td><td>texte</td><td>Formation longue certifiante</td><td>Formations et publics étudiés</td></tr>
+          <tr><td>metiers_rome</td><td>liste (virgule)</td><td>J1501,F1603</td><td>Métiers étudiés : signalés dans la question 3 s'ils figurent dans ref/metiers.csv</td></tr>
+          <tr><td>leviers</td><td>liste (point-virgule)</td><td>L4;L7</td><td>Pistes auxquelles le résultat est rattaché</td></tr>
+          <tr><td>etapes</td><td>liste (point-virgule)</td><td>q2;agir</td><td>Où le résultat est rappelé : q1, q2, q3, agir</td></tr>
+          <tr><td>enseignement</td><td>texte</td><td>Privilégier les formations longues...</td><td>Ce que l'étude suggère pour l'action</td></tr>
+        </tbody></table>
+        <p class="note" style="margin:8px 0 0">N'y retenir que les résultats qui éclairent le parcours ou débouchent sur une piste d'action ciblée, en reprenant les chiffres tels que publiés.</p>
+        <p class="note" style="margin:8px 0 0">Ces résultats sont nationaux et établis sur un champ précis : ils ne tiennent pas compte du contexte propre à chaque territoire. La page l'indique systématiquement à côté des résultats.</p></div>
+
       <div class="file" style="--c:var(--fg3)"><div class="hd"><code>meta.json</code><span>1 fichier</span></div><div class="use">Bandeau, pied de page et mentions de période</div>
         <table><thead><tr><th>Clé</th><th>Type</th><th>Exemple</th><th>Description</th></tr></thead><tbody>
           <tr><td>version</td><td>texte</td><td>1.0</td><td>Version du jeu de données</td></tr>
@@ -273,6 +313,7 @@ h1{font-size:26px;margin:0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15.5px;
       <tr><td>Comprendre : publics</td><td><code>sortants_public</code>, <code>inscrits_public</code></td><td>Parts et apport par public</td></tr>
       <tr><td>Comprendre : dispositifs</td><td><code>sortants_mois</code></td><td>12 derniers mois, territoire et territoires proches</td></tr>
       <tr><td>Comprendre : métiers en tension</td><td><code>formation_metier</code>, <code>offres_metier</code>, <code>ref/metiers</code></td><td>Parts par métier, regroupées par domaine</td></tr>
+      <tr><td>Agir : évaluations nationales</td><td><code>ref/evaluations</code>, <code>ref/evaluations_resultats</code></td><td>Rattachement aux pistes, aux questions et aux métiers par leurs codes</td></tr>
       <tr><td>Agir : simulateur et matrice</td><td><code>ref/leviers</code> + toutes les tables ci-dessus</td><td>Effet = (niveau visé - niveau actuel) / 4 × effet_max × population de base</td></tr>
     </tbody></table></div>
   </div>

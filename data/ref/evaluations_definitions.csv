@@ -1,0 +1,7 @@
+﻿code_evaluation;terme;definition
+DARES2025_RE63;Taux de rappel;Part des candidatures ayant reçu une réponse positive de l'employeur (proposition d'entretien, demande de rappel ou demande d'information complémentaire), rapportée à l'ensemble des candidatures envoyées. Ce n'est pas un taux d'embauche : les étapes suivantes (entretien, embauche) ne sont pas observées
+DARES2025_RE63;Candidat formé au métier;Titulaire du CAP (ou du diplôme d'État pour les aides-soignants) du métier visé, avec 4 ans d'expérience dans ce métier
+DARES2025_RE63;Candidat en reconversion;Titulaire d'un CAP et expérimenté dans un métier proche, moins en tension, qui postule sur le métier visé
+DARES2025_RE63;Formation courte;Formation non certifiante d'une semaine au plus vers le métier visé : 3 jours et 775 € en moyenne
+DARES2025_RE63;Formation longue;"Formation certifiante de 7 à 12 mois vers le métier visé (CAP ou titre professionnel ; validation des acquis de l'expérience d'un an pour les aides-soignants) : 9 mois et 5 875 € en moyenne, avec un court stage en entreprise"
+DARES2025_RE63;Tension;Nombre d'offres d'emploi rapporté au nombre de demandeurs d'emploi, pour un métier et un département

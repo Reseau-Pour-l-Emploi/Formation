@@ -13,7 +13,7 @@ index.html               la page (autonome : polices, logos, bibliothèques PDF 
 modele-donnees.html      dessin d'enregistrement des fichiers de données
 data/
   meta.json              version, date de mise à jour, période, bandeau
-  ref/                   référentiels : territoires, territoires proches, métiers, problématiques, pistes
+  ref/                   référentiels : territoires, territoires proches, métiers, problématiques, pistes, évaluations nationales
   faits/                 comptages par CLPE : sortants, publics, inscrits, métiers, offres, demande, problématiques
 scripts/
   controle.py            contrôles avant publication (Python 3, bibliothèque standard)
@@ -58,6 +58,12 @@ Ces périodes sont déclarées dans `data/meta.json` (rubrique `periodes`) : la 
 4. Commit sur la branche principale : GitHub Pages republie.
 
 Aucune modification de `index.html` n'est nécessaire pour changer les territoires, les territoires proches, les métiers, les problématiques ou les textes et paramètres des pistes (`ref/leviers.csv`).
+
+## Évaluations nationales
+
+`data/ref/evaluations.csv` (une ligne par étude), `data/ref/evaluations_resultats.csv` (une ligne par résultat) et `data/ref/evaluations_definitions.csv` (définitions des termes employés) alimentent le bloc « Ce que disent les évaluations nationales » de l'étape Agir. Chaque résultat est rattaché à des pistes (`L1` à `L10`), à des questions (`q1` à `q3`) et à des métiers (codes ROME). Exemple fourni : Dares, Rapport d'études n° 63, janvier 2025. Les sources sont numérotées et renvoyées en note en bas du bloc. Ces fichiers sont facultatifs : sans eux, le bloc n'apparaît pas.
+
+Le champ et les limites de chaque étude sont obligatoires : ces résultats nationaux ne tiennent pas compte du contexte propre à chaque territoire, et la page le rappelle à côté de chacun d'eux.
 
 ## Points d'attention
 
